@@ -3,9 +3,11 @@ matrix:
   include:
     - env:
         - PYTHON=3.6
+        - CODE_TEST=1
         - STYLE_TEST=0
     - env:
         - PYTHON=3.6
+        - CODE_TEST=0
         - STYLE_TEST=1
 install:
     # install conda
@@ -19,6 +21,11 @@ install:
     - conda create -q -n test-environment python=$PYTHON
     - source activate test-environment
     # install needed packages
+    - conda install -q numpy;
+    - if [ "${CODE_TEST}" == "1" ]; then
+          conda install -q nose;
+          conda install -q pytest;
+      fi
     - if [ "${STYLE_TEST}" == "1" ]; then
           conda install -q pycodestyle;
       fi
@@ -26,6 +33,9 @@ install:
     # install this package
     - python3 setup.py install
 script:
+    - if [ "${CODE_TEST}" == "1" ]; then
+          pytest -W error;
+      fi
     - if [ "${STYLE_TEST}" == "1" ]; then
           pycodestyle . --exclude=versioneer.py;
       fi
