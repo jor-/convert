@@ -26,4 +26,4 @@ Indices and tables
 .. Copyright included from README
 
 .. include:: ../../README.rst
-    :start-after: https://github.com/jor-/convert
+    :start-after: Build Status

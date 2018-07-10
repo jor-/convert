@@ -1,6 +1,6 @@
-====================
+=======
 CONVERT
-====================
+=======
 
 This is *convert*, a library to convert files into other formats.
 
@@ -73,6 +73,14 @@ To install this package after that with *python* run:
     ``cd convert; python setup.py install``
 
 https://github.com/jor-/convert
+
+
+Test status
+===========
+
+.. image:: https://travis-ci.org/jor-/convert.svg?branch=master
+    :target: https://travis-ci.org/jor-/convert
+    :alt: Build Status
 
 
 Copyright
