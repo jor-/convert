@@ -21,6 +21,20 @@ NUMPY_FILE_EXTENSIONS = NATIVE_NUMPY_FILE_EXTENSIONS + COMPRESSED_NUMPY_FILE_EXT
 
 
 def load(file):
+    """
+    Loads a NumPy array.
+
+    Parameters
+    ----------
+    file : str or pathlib.Path
+        The file that should be loaded.
+
+    Returns
+    -------
+    numpy.ndarray
+        The array stored in `file`.
+    """
+
     file = pathlib.Path(file)
 
     if compress.is_compressed_file(file):
@@ -71,6 +85,17 @@ def load(file):
 
 
 def save(file, array):
+    """
+    Saves a NumPy array.
+
+    Parameters
+    ----------
+    file : str or pathlib.Path
+        The file where `array` should be saved.
+    array : numpy.ndarray
+        The array that should be saved.
+    """
+
     file = pathlib.Path(file)
     file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -117,6 +142,17 @@ def save(file, array):
 
 
 def convert(file_from, file_to):
+    """
+    Converts a file containing a NumPy array into another file.
+
+    Parameters
+    ----------
+    file_from : str or pathlib.Path
+        The file that should be converted.
+    file_to : str or pathlib.Path
+        The file to which `file_from` should be converted.
+    """
+
     if file_from != file_to:
         array = load(file_from)
         save(file_to, array)
