@@ -5,10 +5,17 @@ matrix:
         - PYTHON=3.6
         - CODE_TEST=1
         - STYLE_TEST=0
+        - DOC_TEST=0
     - env:
         - PYTHON=3.6
         - CODE_TEST=0
         - STYLE_TEST=1
+        - DOC_TEST=0
+    - env:
+        - PYTHON=3.6
+        - CODE_TEST=0
+        - STYLE_TEST=0
+        - DOC_TEST=1
 install:
     # install conda
     - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
@@ -29,6 +36,9 @@ install:
     - if [ "${STYLE_TEST}" == "1" ]; then
           conda install -q pycodestyle;
       fi
+    - if [ "${DOC_TEST}" == "1" ]; then
+          conda install -q sphinx;
+      fi
     - conda list
     # install this package
     - python3 setup.py install
@@ -38,5 +48,8 @@ script:
       fi
     - if [ "${STYLE_TEST}" == "1" ]; then
           pycodestyle . --exclude=versioneer.py;
+      fi
+    - if [ "${DOC_TEST}" == "1" ]; then
+          sphinx-build -nW -b html -a doc/source doc/build/html;
       fi
 
