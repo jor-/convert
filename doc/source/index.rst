@@ -1,20 +1,29 @@
-.. convert documentation master file, created by
-   sphinx-quickstart on Tue Jul 10 14:52:13 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. Description included from README
 
-Welcome to convert's documentation!
-===================================
+.. include:: ../../README.rst
+    :end-before: Copyright
+
+
+Contents
+========
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 2
 
+    functions
+    changelog
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
+
+.. * :ref:`modindex`
+
+
+.. Copyright included from README
+
+.. include:: ../../README.rst
+    :start-after: https://github.com/jor-/convert
