@@ -141,7 +141,7 @@ def save(file, array):
                              f'Only {NUMPY_FILE_EXTENSIONS} are supported.')
 
 
-def convert(file_from, file_to):
+def convert_file(file_from, file_to):
     """
     Converts a file containing a NumPy array into another file.
 
