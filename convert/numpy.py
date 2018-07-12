@@ -156,3 +156,27 @@ def convert_file(file_from, file_to):
     if file_from != file_to:
         array = load(file_from)
         save(file_to, array)
+    return file_to
+
+
+def convert_file_extension(file, file_extension):
+    """
+    Converts a file containing a NumPy array into another file.
+
+    Parameters
+    ----------
+    file : str or pathlib.Path
+        The file that should be converted.
+    file_extension : str
+        The new file extension that the converted file should have.
+        The new file has the same filename as `file` only its file extension is replaced by
+        `file_extension`.
+    """
+
+    file = pathlib.Path(file)
+    file_to = file
+    if compress.is_compressed_file(file):
+        file_to = file_to.with_suffix('')
+    file_to = file_to.with_suffix(file_extension)
+    convert_file(file, file_to)
+    return file_to
