@@ -11,7 +11,7 @@
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 """A setuptools based setup module.
@@ -74,4 +74,10 @@ setuptools.setup(
         'numpy': ['numpy>=1.7'],
         'scipy': ['scipy>=0.10'],
     },
+    # scripts
+    entry_points={
+        'console_scripts': [
+            'convert_numpy = convert.numpy:_main',
+        ],
+    }
 )
