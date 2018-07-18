@@ -1,52 +1,45 @@
 import pathlib
 
+import convert.universal
+
+
+# *** constants *** #
+
 GZIP_FILE_EXTENSION = '.gz'
 BZ2_FILE_EXTENSION = '.bz2'
 LZMA_FILE_EXTENSION = '.xz'
 
-COMPRESS_FILE_EXTENSIONS = (GZIP_FILE_EXTENSION,
-                            BZ2_FILE_EXTENSION,
-                            LZMA_FILE_EXTENSION)
+FILE_EXTENSIONS = (GZIP_FILE_EXTENSION,
+                   BZ2_FILE_EXTENSION,
+                   LZMA_FILE_EXTENSION)
 
 
-def compressed_file(file, mode='r'):
+# *** load and save functions *** #
+
+def compress_file_object(file, mode='r'):
     file = pathlib.Path(file)
     file_extension = file.suffix
     if file_extension == GZIP_FILE_EXTENSION:
         import gzip
-        return gzip.GzipFile(file, mode=mode, compresslevel=9)
+        return gzip.open(file, mode=mode, compresslevel=9)
     elif file_extension == BZ2_FILE_EXTENSION:
         import bz2
-        return bz2.BZ2File(file, mode=mode, compresslevel=9)
+        return bz2.open(file, mode=mode, compresslevel=9)
     elif file_extension == LZMA_FILE_EXTENSION:
         import lzma
         if mode.startswith('w'):
             preset = 6
         else:
             preset = None
-        return lzma.LZMAFile(file, mode=mode, preset=preset)
+        return lzma.open(file, mode=mode, preset=preset)
     else:
-        assert file_extension not in COMPRESS_FILE_EXTENSIONS
-        raise ValueError(f'File {file} has an unsupported file extension. '
-                         f'Only {COMPRESS_FILE_EXTENSIONS} are supported.')
+        assert file_extension not in FILE_EXTENSIONS
+        raise convert.universal.UnsupportedFileExtension(file, supported_file_extensions=FILE_EXTENSIONS)
 
 
-def is_compressed_file(file):
-    file = pathlib.Path(file)
-    return file.suffix in COMPRESS_FILE_EXTENSIONS
-
-
-def _read_write(file, mode):
-    if is_compressed_file(file):
-        return compressed_file(file, mode=mode)
-    else:
-        raise ValueError(f'File {file} has an unsupported file extension. '
-                         f'Only {COMPRESS_FILE_EXTENSIONS} are supported.')
-
-
-def read(file):
-    return _read_write(file, mode='r')
-
-
-def write(file):
-    return _read_write(file, mode='w')
+def compress_file_extension(file):
+    file = str(file)
+    for file_extension in FILE_EXTENSIONS:
+        if file.endswith(file_extension):
+            return file_extension
+    raise convert.universal.UnsupportedFileExtension(file, supported_file_extensions=FILE_EXTENSIONS)

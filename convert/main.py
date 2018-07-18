@@ -1,6 +1,6 @@
 import argparse
 
-import convert.numpy
+import convert.universal
 
 
 def _main():
@@ -23,7 +23,7 @@ def _main():
     args = parser.parse_args()
 
     # convert
-    convert.numpy.convert_file_extension(args.file, args.file_extension)
+    convert.universal.convert_file_extension(args.file, args.file_extension)
 
 
 if __name__ == "__main__":

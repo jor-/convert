@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 import convert.numpy
-import convert.compress
+import convert.universal
 
 
 # *** random array *** #
@@ -37,7 +37,7 @@ test_numpy_save_load_setups = [
     (shape, data_type, file_extension)
     for shape in ((10,), (2, 3))
     for data_type in DATA_TYPES
-    for file_extension in convert.numpy.NUMPY_FILE_EXTENSIONS
+    for file_extension in convert.numpy.FILE_EXTENSIONS
 ]
 
 
@@ -53,9 +53,9 @@ def test_numpy_save_load(shape, data_type, file_extension):
         file = base_file.with_suffix(file_extension)
 
         # test save and load
-        convert.numpy.save(file, a)
+        convert.universal.save(file, a)
         assert file.exists()
-        b = convert.numpy.load(file)
+        b = convert.universal.load(file)
         assert file.exists()
     assert np.allclose(a, b)
 
@@ -64,8 +64,8 @@ test_numpy_convert_setups = [
     (shape, data_type, file_extension, other_file_extension)
     for shape in ((10,), (2, 3))
     for data_type in DATA_TYPES
-    for file_extension in convert.numpy.NUMPY_FILE_EXTENSIONS
-    for other_file_extension in convert.numpy.NUMPY_FILE_EXTENSIONS
+    for file_extension in convert.numpy.FILE_EXTENSIONS
+    for other_file_extension in convert.numpy.FILE_EXTENSIONS
 ]
 
 
@@ -81,16 +81,16 @@ def test_numpy_convert_file(shape, data_type, file_extension, other_file_extensi
         # save base file
         base_file_from = pathlib.Path(tmp_dir) / FILENAME_FROM
         file = base_file_from.with_suffix(file_extension)
-        convert.numpy.save(file, a)
+        convert.universal.save(file, a)
         assert file.exists()
         # convert file
         base_file_to = pathlib.Path(tmp_dir) / FILENAME_TO
         other_file = base_file_to.with_suffix(other_file_extension)
-        convert.numpy.convert_file(file, other_file)
+        convert.universal.convert_file(file, other_file)
         assert file.exists()
         assert other_file.exists()
         # load converted file
-        b = convert.numpy.load(other_file)
+        b = convert.universal.load(other_file)
     assert np.allclose(a, b)
 
 
@@ -105,13 +105,14 @@ def test_numpy_convert_file_extension(shape, data_type, file_extension, other_fi
         # save base file
         base_file = pathlib.Path(tmp_dir) / FILENAME
         file = base_file.with_suffix(file_extension)
-        convert.numpy.save(file, a)
+        convert.universal.save(file, a)
         assert file.exists()
         # convert file
-        other_file = convert.numpy.convert_file_extension(file, other_file_extension)
-        b = convert.numpy.load(other_file)
+        other_file = convert.universal.convert_file_extension(file, other_file_extension)
+        other_file = pathlib.Path(other_file)
+        b = convert.universal.load(other_file)
         assert file.exists()
         assert other_file.exists()
         # load converted file
-        b = convert.numpy.load(other_file)
+        b = convert.universal.load(other_file)
     assert np.allclose(a, b)
