@@ -180,29 +180,3 @@ def convert_file_extension(file, file_extension):
     file_to = file_to.with_suffix(file_extension)
     convert_file(file, file_to)
     return file_to
-
-
-# *** main function for script call *** #
-
-def _main():
-
-    # parse arguments
-    import argparse
-
-    parser = argparse.ArgumentParser(
-        description=f'Convert a file containing a NumPy array into another file format. '
-                    f'Supported file extensions are {NUMPY_FILE_EXTENSIONS}.')
-
-    parser.add_argument('file', type=str,
-                        help='The file that should be converted.')
-    parser.add_argument('file_extension', type=str, choices=NUMPY_FILE_EXTENSIONS,
-                        help='The new file extension to which the file should be converted.')
-
-    args = parser.parse_args()
-
-    # convert
-    convert_file_extension(args.file, args.file_extension)
-
-
-if __name__ == "__main__":
-    _main()

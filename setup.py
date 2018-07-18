@@ -77,7 +77,7 @@ setuptools.setup(
     # scripts
     entry_points={
         'console_scripts': [
-            'convert_numpy = convert.numpy:_main',
+            'convert_numpy = convert.main:_main',
         ],
     }
 )
