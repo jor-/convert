@@ -29,6 +29,7 @@ install:
     - source activate test-environment
     # install needed packages
     - conda install -q numpy;
+    - conda install -q scipy;
     - if [ "${CODE_TEST}" == "1" ]; then
           conda install -q nose;
           conda install -q pytest;
