@@ -1,11 +1,9 @@
-import pathlib
-import tempfile
-
 import numpy as np
 import pytest
 
-import convert.numpy
 import convert.universal
+import convert.tests.universal
+from convert.numpy import FILE_EXTENSIONS
 
 
 # *** random array *** #
@@ -16,7 +14,7 @@ DATA_TYPE_COMPLEX = 'complex'
 DATA_TYPES = (DATA_TYPE_INT, DATA_TYPE_FLOAT, DATA_TYPE_COMPLEX)
 
 
-def random_array(shape, data_type):
+def random_array(shape, data_type=DATA_TYPE_FLOAT):
     # generate test array
     n = np.prod(shape)
     if data_type == DATA_TYPE_INT:
@@ -33,86 +31,39 @@ def random_array(shape, data_type):
 
 # *** tests *** #
 
-test_numpy_save_load_setups = [
+test_save_load_setups = [
     (shape, data_type, file_extension)
     for shape in ((10,), (2, 3))
     for data_type in DATA_TYPES
-    for file_extension in convert.numpy.FILE_EXTENSIONS
+    for file_extension in FILE_EXTENSIONS
 ]
 
 
-@pytest.mark.parametrize('shape, data_type, file_extension', test_numpy_save_load_setups)
-def test_numpy_save_load(shape, data_type, file_extension):
-    # generate test array
-    a = random_array(shape, data_type)
-
-    # test save load and convert
-    FILENAME = pathlib.Path('test_file')
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        base_file = pathlib.Path(tmp_dir) / FILENAME
-        file = base_file.with_suffix(file_extension)
-
-        # test save and load
-        convert.universal.save(file, a)
-        assert file.exists()
-        b = convert.universal.load(file)
-        assert file.exists()
-    assert np.allclose(a, b)
+@pytest.mark.parametrize('shape, data_type, file_extension', test_save_load_setups)
+def test_save_load(shape, data_type, file_extension):
+    value = random_array(shape, data_type=data_type)
+    other_value = convert.tests.universal.test_save_load(value, file_extension)
+    assert np.allclose(value, other_value)
 
 
-test_numpy_convert_setups = [
+test_convert_setups = [
     (shape, data_type, file_extension, other_file_extension)
     for shape in ((10,), (2, 3))
     for data_type in DATA_TYPES
-    for file_extension in convert.numpy.FILE_EXTENSIONS
-    for other_file_extension in convert.numpy.FILE_EXTENSIONS
+    for file_extension in FILE_EXTENSIONS
+    for other_file_extension in FILE_EXTENSIONS
 ]
 
 
-@pytest.mark.parametrize('shape, data_type, file_extension, other_file_extension', test_numpy_convert_setups)
-def test_numpy_convert_file(shape, data_type, file_extension, other_file_extension):
-    # generate test array
-    a = random_array(shape, data_type)
-
-    # test save load and convert
-    FILENAME_FROM = pathlib.Path('test_file')
-    FILENAME_TO = pathlib.Path('test_file_converted')
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        # save base file
-        base_file_from = pathlib.Path(tmp_dir) / FILENAME_FROM
-        file = base_file_from.with_suffix(file_extension)
-        convert.universal.save(file, a)
-        assert file.exists()
-        # convert file
-        base_file_to = pathlib.Path(tmp_dir) / FILENAME_TO
-        other_file = base_file_to.with_suffix(other_file_extension)
-        convert.universal.convert_file(file, other_file)
-        assert file.exists()
-        assert other_file.exists()
-        # load converted file
-        b = convert.universal.load(other_file)
-    assert np.allclose(a, b)
+@pytest.mark.parametrize('shape, data_type, file_extension, other_file_extension', test_convert_setups)
+def test_convert_file(shape, data_type, file_extension, other_file_extension):
+    value = random_array(shape, data_type=data_type)
+    other_value = convert.tests.universal.test_convert_file(value, file_extension, other_file_extension)
+    assert np.allclose(value, other_value)
 
 
-@pytest.mark.parametrize('shape, data_type, file_extension, other_file_extension', test_numpy_convert_setups)
-def test_numpy_convert_file_extension(shape, data_type, file_extension, other_file_extension):
-    # generate test array
-    a = random_array(shape, data_type)
-
-    # test save load and convert
-    FILENAME = pathlib.Path('test_file')
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        # save base file
-        base_file = pathlib.Path(tmp_dir) / FILENAME
-        file = base_file.with_suffix(file_extension)
-        convert.universal.save(file, a)
-        assert file.exists()
-        # convert file
-        other_file = convert.universal.convert_file_extension(file, other_file_extension)
-        other_file = pathlib.Path(other_file)
-        b = convert.universal.load(other_file)
-        assert file.exists()
-        assert other_file.exists()
-        # load converted file
-        b = convert.universal.load(other_file)
-    assert np.allclose(a, b)
+@pytest.mark.parametrize('shape, data_type, file_extension, other_file_extension', test_convert_setups)
+def test_convert_file_extension(shape, data_type, file_extension, other_file_extension):
+    value = random_array(shape, data_type=data_type)
+    other_value = convert.tests.universal.test_convert_file_extension(value, file_extension, other_file_extension)
+    assert np.allclose(value, other_value)
