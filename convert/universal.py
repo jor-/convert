@@ -18,7 +18,7 @@ class UnsupportedFileExtension(ValueError):
 
 
 SUPPORTED_MODULES = []
-for module_string in ('convert.numpy',):
+for module_string in ('convert.scipy', 'convert.numpy'):
     try:
         module = importlib.import_module(module_string)
     except ImportError:
