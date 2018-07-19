@@ -1,2 +1,4 @@
+include LICENSE.txt
 include versioneer.py
+include versioneer_extended.py
 include convert/_version.py
