@@ -75,6 +75,16 @@ To install this package after that with *python* run:
 https://github.com/jor-/io-convert
 
 
+Documentation
+=============
+
+.. image:: https://readthedocs.org/projects/io-convert/badge/?version=stable
+    :target: http://io-convert.readthedocs.io/en/stable/?badge=stable
+    :alt: Documentation Status
+
+https://io-convert.readthedocs.io
+
+
 Test status
 ===========
 
