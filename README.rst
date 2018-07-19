@@ -1,8 +1,8 @@
-=======
-CONVERT
-=======
+==========
+IO-CONVERT
+==========
 
-This is *convert*, a library to convert files into other formats.
+This is *io-convert*, a library to load, save and convert data into several file formats.
 
 
 Release info
@@ -13,73 +13,73 @@ There are several ways to obtain and install this package.
 Conda
 -----
 
-.. image:: https://img.shields.io/conda/v/jore/convert.svg
-    :target: https://anaconda.org/jore/convert
+.. image:: https://img.shields.io/conda/v/jore/io-convert.svg
+    :target: https://anaconda.org/jore/io-convert
     :alt: Conda version
-.. image:: https://anaconda.org/jore/convert/badges/latest_release_date.svg
-    :target: https://anaconda.org/jore/convert
+.. image:: https://anaconda.org/jore/io-convert/badges/latest_release_date.svg
+    :target: https://anaconda.org/jore/io-convert
     :alt: Conda last updated
-.. image:: https://anaconda.org/jore/convert/badges/platforms.svg
-    :target: https://anaconda.org/jore/convert
+.. image:: https://anaconda.org/jore/io-convert/badges/platforms.svg
+    :target: https://anaconda.org/jore/io-convert
     :alt: Conda platforms
-.. image:: https://anaconda.org/jore/convert/badges/license.svg
-    :target: https://anaconda.org/jore/convert
+.. image:: https://anaconda.org/jore/io-convert/badges/license.svg
+    :target: https://anaconda.org/jore/io-convert
     :alt: Conda licence
 
 
 To install this package with *conda* run:
 
-    ``conda install -c jore convert``
+    ``conda install -c jore io-convert``
 
-https://anaconda.org/jore/convert
+https://anaconda.org/jore/io-convert
 
 
 pip
 ---
 
-.. image:: https://img.shields.io/pypi/v/convert.svg
-    :target: https://pypi.python.org/pypi/convert
+.. image:: https://img.shields.io/pypi/v/io-convert.svg
+    :target: https://pypi.python.org/pypi/io-convert
     :alt: PyPI version
-.. image:: https://img.shields.io/pypi/format/convert.svg
-    :target: https://pypi.python.org/pypi/convert
+.. image:: https://img.shields.io/pypi/format/io-convert.svg
+    :target: https://pypi.python.org/pypi/io-convert
     :alt: PyPI format
-.. image:: https://img.shields.io/pypi/l/convert.svg
-    :target: https://pypi.python.org/pypi/convert
+.. image:: https://img.shields.io/pypi/l/io-convert.svg
+    :target: https://pypi.python.org/pypi/io-convert
     :alt: PyPI licence
 
 To install this package with *pip* run:
 
-    ``pip install 'convert'``
+    ``pip install 'io-convert'``
 
-https://pypi.python.org/pypi/convert
+https://pypi.python.org/pypi/io-convert
 
 
 GitHub
 ------
 
-.. image:: https://img.shields.io/github/tag/jor-/convert.svg
-    :target: https://github.com/jor-/convert
+.. image:: https://img.shields.io/github/tag/jor-/io-convert.svg
+    :target: https://github.com/jor-/io-convert
     :alt: GitHub last tag
-.. image:: https://img.shields.io/github/license/jor-/convert.svg
-    :target: https://github.com/jor-/convert
+.. image:: https://img.shields.io/github/license/jor-/io-convert.svg
+    :target: https://github.com/jor-/io-convert
     :alt: GitHub license
 
 To clone this package with *git* run:
 
-    ``git clone https://github.com/jor-/convert.git``
+    ``git clone https://github.com/jor-/io-convert.git``
 
 To install this package after that with *python* run:
 
-    ``cd convert; python setup.py install``
+    ``cd io-convert; python setup.py install``
 
-https://github.com/jor-/convert
+https://github.com/jor-/io-convert
 
 
 Test status
 ===========
 
-.. image:: https://travis-ci.org/jor-/convert.svg?branch=master
-    :target: https://travis-ci.org/jor-/convert
+.. image:: https://travis-ci.org/jor-/io-convert.svg?branch=master
+    :target: https://travis-ci.org/jor-/io-convert
     :alt: Build Status
 
 

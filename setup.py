@@ -31,12 +31,12 @@ with open(readme_file, mode='r', encoding='utf-8') as f:
 # setup
 setuptools.setup(
     # general informations
-    name='convert',
-    description='This library allows to convert files into other formats.',
+    name='io-convert',
+    description='This library allows to load, save and convert data into several file formats.',
     long_description=long_description,
     keywords='file format numpy scipy',
 
-    url='https://github.com/jor-/convert',
+    url='https://github.com/jor-/io-convert',
     author='Joscha Reimer',
     author_email='jor@informatik.uni-kiel.de',
     license='AGPLv3+',
@@ -77,7 +77,7 @@ setuptools.setup(
     # scripts
     entry_points={
         'console_scripts': [
-            'convert = convert.main:_main',
+            'io-convert = convert.main:_main',
         ],
     }
 )
