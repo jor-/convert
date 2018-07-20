@@ -4,7 +4,7 @@ import warnings
 import convert.compress
 
 
-class UnsupportedFileExtension(ValueError):
+class UnsupportedFileExtensionError(ValueError):
     """ The file extension is not supported. """
 
     def __init__(self, file, supported_file_extensions=None):
@@ -37,7 +37,7 @@ def _module_and_file_extension(file):
                 return module, file_extension
 
     supported_file_extensions = tuple(file_extension for module in SUPPORTED_MODULES for file_extension in module.FILE_EXTENSIONS)
-    raise UnsupportedFileExtension(file, supported_file_extensions=supported_file_extensions)
+    raise UnsupportedFileExtensionError(file, supported_file_extensions=supported_file_extensions)
 
 
 def _prepare_load_save(file, mode):
@@ -49,7 +49,7 @@ def _prepare_load_save(file, mode):
     # check if compress file extension
     try:
         compress_file_extension = convert.compress.compress_file_extension(file_extension)
-    except UnsupportedFileExtension:
+    except UnsupportedFileExtensionError:
         compress_file_extension = None
     else:
         file_extension = file_extension[: len(file_extension) - len(compress_file_extension)]

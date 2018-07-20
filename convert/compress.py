@@ -34,7 +34,7 @@ def compress_file_object(file, mode='r'):
         return lzma.open(file, mode=mode, preset=preset)
     else:
         assert file_extension not in FILE_EXTENSIONS
-        raise convert.universal.UnsupportedFileExtension(file, supported_file_extensions=FILE_EXTENSIONS)
+        raise convert.universal.UnsupportedFileExtensionError(file, supported_file_extensions=FILE_EXTENSIONS)
 
 
 def compress_file_extension(file):
@@ -42,4 +42,4 @@ def compress_file_extension(file):
     for file_extension in FILE_EXTENSIONS:
         if file.endswith(file_extension):
             return file_extension
-    raise convert.universal.UnsupportedFileExtension(file, supported_file_extensions=FILE_EXTENSIONS)
+    raise convert.universal.UnsupportedFileExtensionError(file, supported_file_extensions=FILE_EXTENSIONS)
