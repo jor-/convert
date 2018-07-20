@@ -17,6 +17,21 @@ class UnsupportedFileExtensionError(ValueError):
         super().__init__(message)
 
 
+class UnsupportedConversionError(ValueError):
+    """ The file extension is not supported. """
+
+    def __init__(self, file_from, file_to, supported_file_extension_combinations=None):
+        self.file_from = file_from
+        self.file_to = file_to
+        message = f'The file {file_from} can not be converted to file {file_to}.'
+        if supported_file_extension_combinations is not None:
+            self.supported_file_extension_combinations = supported_file_extension_combinations
+            message += (f' Only {supported_file_extension_combinations} as file extension'
+                        f' conversions are supported.')
+        self.message = message
+        super().__init__(message)
+
+
 SUPPORTED_MODULES = []
 for module_string in ('convert.scipy', 'convert.numpy'):
     try:
@@ -28,6 +43,15 @@ for module_string in ('convert.scipy', 'convert.numpy'):
     else:
         SUPPORTED_MODULES.append(module)
 
+SUPPORTED_FILE_EXTENSIONS = [file_extension
+                             for module in SUPPORTED_MODULES
+                             for file_extension in module.FILE_EXTENSIONS]
+
+SUPPORTED_FILE_EXTENSION_COMBINATIONS = [(file_extension_1, file_extension_2)
+                                         for module in SUPPORTED_MODULES
+                                         for file_extension_1 in module.FILE_EXTENSIONS
+                                         for file_extension_2 in module.FILE_EXTENSIONS]
+
 
 def _module_and_file_extension(file):
     file = str(file)
@@ -35,16 +59,11 @@ def _module_and_file_extension(file):
         for file_extension in module.FILE_EXTENSIONS:
             if file.endswith(file_extension):
                 return module, file_extension
-
-    supported_file_extensions = tuple(file_extension for module in SUPPORTED_MODULES for file_extension in module.FILE_EXTENSIONS)
-    raise UnsupportedFileExtensionError(file, supported_file_extensions=supported_file_extensions)
+    raise UnsupportedFileExtensionError(file, supported_file_extensions=SUPPORTED_FILE_EXTENSIONS)
 
 
-def _prepare_load_save(file, mode):
+def _io_function(file, mode, module, file_extension):
     assert mode in ('r', 'w')
-
-    # get model and file extension
-    module, file_extension = _module_and_file_extension(file)
 
     # check if compress file extension
     try:
@@ -69,8 +88,23 @@ def _prepare_load_save(file, mode):
         def open_function():
             return convert.compress.compress_file_object(file, mode=mode)
 
+    #
+    if mode.startswith('r'):
+        def io_function():
+            with open_function() as file_object:
+                return module.load(file_object, file_extension)
+    else:
+        def io_function(value):
+            with open_function() as file_object:
+                return module.save(file_object, file_extension, value)
+
     # return
-    return open_function, module, file_extension
+    return io_function
+
+
+def _load(file, module, file_extension):
+    io_function = _io_function(file, 'r', module, file_extension)
+    return io_function()
 
 
 def load(file):
@@ -88,10 +122,13 @@ def load(file):
         The value stored in `file`.
     """
 
-    open_function, module, file_extension = _prepare_load_save(file, 'r')
+    module, file_extension = _module_and_file_extension(file)
+    return _load(file, module, file_extension)
 
-    with open_function() as file_object:
-        return module.load(file_object, file_extension)
+
+def _save(file, module, file_extension, value):
+    io_function = _io_function(file, 'w', module, file_extension)
+    return io_function(value)
 
 
 def save(file, value):
@@ -106,10 +143,8 @@ def save(file, value):
         The value that should be saved.
     """
 
-    open_function, module, file_extension = _prepare_load_save(file, 'w')
-
-    with open_function() as file_object:
-        return module.save(file_object, file_extension, value)
+    module, file_extension = _module_and_file_extension(file)
+    return _save(file, module, file_extension, value)
 
 
 def convert_file(file_from, file_to):
@@ -125,8 +160,16 @@ def convert_file(file_from, file_to):
     """
 
     if file_from != file_to:
-        array = load(file_from)
-        save(file_to, array)
+        module_from, file_extension_from = _module_and_file_extension(file_from)
+        module_to, file_extension_to = _module_and_file_extension(file_to)
+
+        if (file_extension_from, file_extension_to) not in SUPPORTED_FILE_EXTENSION_COMBINATIONS:
+            raise UnsupportedConversionError(
+                file_from, file_to,
+                supported_file_extension_combinations=SUPPORTED_FILE_EXTENSION_COMBINATIONS)
+
+        array = _load(file_from, module_from, file_extension_from)
+        _save(file_to, module_to, file_extension_to, array)
     return file_to
 
 

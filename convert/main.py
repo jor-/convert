@@ -1,23 +1,20 @@
 import argparse
+import os
 
 import convert.universal
 
 
 def _main():
-
-    FILE_EXTENSIONS = tuple(file_extension
-                            for module in convert.universal.SUPPORTED_MODULES
-                            for file_extension in module.FILE_EXTENSIONS)
-
+    description = os.linesep.join((
+        f'Convert a file into another file format.',
+        f'Supported file extensions are {convert.universal.SUPPORTED_FILE_EXTENSIONS}.',
+        f'Supported conversion pairs are {convert.universal.SUPPORTED_FILE_EXTENSION_COMBINATIONS}.'))
     # parse arguments
-    parser = argparse.ArgumentParser(
-        description=f'Convert a file containing into another file format. '
-                    f'Supported file extensions are {FILE_EXTENSIONS}.'
-                    f'Not every converting might be reasonable.')
+    parser = argparse.ArgumentParser(description=description)
 
     parser.add_argument('file', type=str,
                         help='The file that should be converted.')
-    parser.add_argument('file_extension', type=str, choices=FILE_EXTENSIONS,
+    parser.add_argument('file_extension', type=str, choices=convert.universal.SUPPORTED_FILE_EXTENSIONS,
                         help='The new file extension to which the file should be converted.')
 
     args = parser.parse_args()
