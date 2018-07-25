@@ -71,7 +71,7 @@ setuptools.setup(
     install_requires=[
     ],
     extras_require={
-        'numpy': ['numpy>=1.7'],
+        'numpy': ['numpy>=1.15'],
         'scipy': ['scipy>=0.10'],
     },
     # scripts

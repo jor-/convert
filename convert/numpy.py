@@ -39,10 +39,10 @@ def load(file_object, file_extension):
     # npz file
     elif file_extension == NUMPY_COMPRESSED_FILE_EXTENSION:
         with np.load(file_object, allow_pickle=False) as npz_file:
-            if len(npz_file.keys()) != 1:
+            if len(npz_file) != 1:
                 raise ValueError(f'Only files with a single array can be loaded. Instead '
-                                 f'{len(npz_file.keys())} arrays are stored in the file.')
-            return npz_file[npz_file.keys()[0]]
+                                 f'{len(npz_file)} arrays are stored in the file.')
+            return next(iter(npz_file.values()))
     # unknown file
     else:
         assert False
