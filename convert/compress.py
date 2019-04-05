@@ -28,7 +28,7 @@ def compress_file_object(file, mode='r'):
     elif file_extension == LZMA_FILE_EXTENSION:
         import lzma
         if mode.startswith('w'):
-            preset = 6
+            preset = 9
         else:
             preset = None
         return lzma.open(file, mode=mode, preset=preset)
